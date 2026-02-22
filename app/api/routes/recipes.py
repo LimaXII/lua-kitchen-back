@@ -21,3 +21,10 @@ def search_recipes(ingredient: str, db: Session = Depends(get_db)):
     if not recipes:
         raise HTTPException(status_code=404, detail="Nenhuma receita encontrada com esse ingrediente")
     return recipes
+
+
+@router.delete("/{recipe_id}")
+def delete_recipe(recipe_id: str, db: Session = Depends(get_db)):
+    if not crud.delete_recipe(db, recipe_id):
+        raise HTTPException(status_code=404, detail="Receita não encontrada")
+    return {"message": "Receita deletada com sucesso"}

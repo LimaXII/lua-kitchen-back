@@ -53,6 +53,16 @@ A API estará disponível em:
 
 ---
 
+## 🧪 Testes
+
+Rodar todos os testes:
+
+```bash
+poetry run pytest tests/ -v
+```
+
+---
+
 ## 👨‍💻 Desenvolvimento
 
 Rodar com reload automático:

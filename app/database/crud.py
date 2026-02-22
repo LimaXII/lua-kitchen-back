@@ -54,3 +54,12 @@ def search_by_ingredient(db: Session, ingredient_name: str):
         .distinct()
         .all()
     )
+
+
+def delete_recipe(db: Session, recipe_id: str):
+    recipe = db.query(models.Recipe).filter(models.Recipe.id == recipe_id).first()
+    if not recipe:
+        return False
+    db.delete(recipe)
+    db.commit()
+    return True
