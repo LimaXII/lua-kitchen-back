@@ -19,6 +19,7 @@ def create_recipe(db: Session, recipe_data: schemas.RecipeCreate):
         prepare_time=recipe_data.prepare_time,
         score=recipe_data.score,
         image_path=recipe_data.image_path,
+        times_made=0,
     )
 
     db.add(db_recipe)
@@ -42,8 +43,25 @@ def create_recipe(db: Session, recipe_data: schemas.RecipeCreate):
     db.refresh(db_recipe)
     return db_recipe
 
-def list_recipes(db: Session):
-    return db.query(models.Recipe).all()
+def get_recipe_by_id(db: Session, recipe_id: str):
+    return db.query(models.Recipe).filter(models.Recipe.id == recipe_id).first()
+
+
+def list_recipes(db: Session, order_by_times_made: bool = False):
+    q = db.query(models.Recipe)
+    if order_by_times_made:
+        q = q.order_by(models.Recipe.times_made.desc())
+    return q.all()
+
+
+def increment_times_made(db: Session, recipe_id: str):
+    recipe = get_recipe_by_id(db, recipe_id)
+    if not recipe:
+        return None
+    recipe.times_made = (recipe.times_made or 0) + 1
+    db.commit()
+    db.refresh(recipe)
+    return recipe
 
 def search_by_ingredient(db: Session, ingredient_name: str):
     return (

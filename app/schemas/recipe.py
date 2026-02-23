@@ -9,6 +9,7 @@ class RecipeBase(BaseModel):
     prepare_time: int
     score: int = 0
     image_path: str | None = None
+    times_made: int = 0
 
 class RecipeCreate(RecipeBase):
     ingredients: list[dict] = [] 

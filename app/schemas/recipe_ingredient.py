@@ -1,9 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from .ingredient import Ingredient
 
 class RecipeIngredientSchema(BaseModel):
     ingredient: Ingredient
     quantity: str | None = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -14,6 +14,7 @@ class Recipe(Base):
     prepare_time = Column(Integer, nullable=False)
     score = Column(Integer, default=0)
     image_path = Column(String, nullable=True)
+    times_made = Column(Integer, default=0)
 
     created_at = Column(Date, default=date.today)
     updated_at = Column(Date, default=date.today)
