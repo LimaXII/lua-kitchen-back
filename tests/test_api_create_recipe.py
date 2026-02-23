@@ -19,7 +19,7 @@ def test_create_recipe(client: TestClient):
         "prepare_mode": "Misture os ingredientes e asse por 40 min",
         "prepare_time": 45,
         "score": 5,
-        "image_path": None,
+        "image_base64": None,
         "ingredients": [
             {"name": "farinha", "quantity": "2 xícaras"},
             {"name": "chocolate", "quantity": "200g"},

@@ -62,11 +62,3 @@ poetry run pytest tests/ -v
 ```
 
 ---
-
-## 👨‍💻 Desenvolvimento
-
-Rodar com reload automático:
-
-```bash
-poetry run uvicorn app.main:app --reload
-```

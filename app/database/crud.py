@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 from app import models, schemas
 
@@ -18,7 +19,7 @@ def create_recipe(db: Session, recipe_data: schemas.RecipeCreate):
         prepare_mode=recipe_data.prepare_mode,
         prepare_time=recipe_data.prepare_time,
         score=recipe_data.score,
-        image_path=recipe_data.image_path,
+        image_base64=recipe_data.image_base64,
         times_made=0,
     )
 
@@ -29,13 +30,14 @@ def create_recipe(db: Session, recipe_data: schemas.RecipeCreate):
     for item in recipe_data.ingredients:
         ing_name = item.get("name") if isinstance(item, dict) else item.name
         ing_qty = item.get("quantity") if isinstance(item, dict) else item.quantity
-        
+
         ingredient = get_or_create_ingredient(db, ing_name)
 
+        quantity_lower = ing_qty.strip().lower() if (ing_qty and str(ing_qty).strip()) else None
         db_rel = models.RecipeIngredient(
             recipe_id=db_recipe.id,
             ingredient_id=ingredient.id,
-            quantity=ing_qty,
+            quantity=quantity_lower,
         )
         db.add(db_rel)
 
@@ -59,6 +61,7 @@ def increment_times_made(db: Session, recipe_id: str):
     if not recipe:
         return None
     recipe.times_made = (recipe.times_made or 0) + 1
+    recipe.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(recipe)
     return recipe
